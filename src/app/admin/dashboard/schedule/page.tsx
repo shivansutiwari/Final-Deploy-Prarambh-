@@ -12,6 +12,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { getDoc, setDoc, doc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { Loader2, Trash2, PlusCircle, Clock } from 'lucide-react';
+import { withDynamicImport } from '@/components/admin/with-dynamic-import';
 
 type ScheduleItem = {
     time: string;
@@ -21,7 +22,7 @@ type ScheduleItem = {
 
 const initialSchedule: ScheduleItem[] = [];
 
-export default function ScheduleEditorPage() {
+function ScheduleEditorPage() {
     const [schedule, setSchedule] = useState<ScheduleItem[]>(initialSchedule);
     const [loading, setLoading] = useState(false);
     const [pageLoading, setPageLoading] = useState(true);
@@ -153,3 +154,5 @@ export default function ScheduleEditorPage() {
         </div>
     )
 }
+
+export default withDynamicImport(ScheduleEditorPage);

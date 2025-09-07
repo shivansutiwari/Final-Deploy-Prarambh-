@@ -11,10 +11,13 @@ import { Textarea } from '@/components/ui/textarea';
 import { getDoc, setDoc, doc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { Loader2 } from 'lucide-react';
+import { withDynamicImport } from '@/components/admin/with-dynamic-import';
 
 const initialContributors: string[] = [];
 
-export default function ContributorsEditorPage() {
+// Use withDynamicImport HOC to prevent Firebase initialization during static export
+
+function ContributorsEditor() {
     const [contributors, setContributors] = useState(initialContributors);
     const [loading, setLoading] = useState(false);
     const [pageLoading, setPageLoading] = useState(true);
@@ -115,3 +118,5 @@ export default function ContributorsEditorPage() {
         </div>
     )
 }
+
+export default withDynamicImport(ContributorsEditor);

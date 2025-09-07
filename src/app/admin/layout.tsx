@@ -14,6 +14,7 @@ import { doc, getDoc } from 'firebase/firestore';
 import { useToast } from '@/hooks/use-toast';
 import Link from 'next/link';
 import Image from 'next/image';
+import dynamic from 'next/dynamic';
 
 const ADMIN_UID = "XnJ1ZEC2geTfzFt68u7teyzpHK22";
 
@@ -247,7 +248,7 @@ function AdminLayoutContent({ children }: { children: React.ReactNode }) {
 }
 
 
-export default function AdminLayout({ children }: { children: React.ReactNode }) {
+function AdminLayout({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
     if (pathname === '/admin/login') {
         return <>{children}</>;
@@ -255,3 +256,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
     return <AdminLayoutContent>{children}</AdminLayoutContent>;
 }
+
+// Use dynamic import with no SSR to prevent Firebase initialization during static export
+const DynamicAdminLayout = dynamic(() => Promise.resolve(AdminLayout), {
+  ssr: false,
+});
+
+export default DynamicAdminLayout;

@@ -13,6 +13,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { getDoc, setDoc, doc } from 'firebase/firestore';
 import { db, storage } from '@/lib/firebase';
 import { Loader2, Trash2, PlusCircle, Image as ImageIcon, Link as LinkIcon, Youtube, Facebook, Instagram, Twitter, Linkedin, Send, MapPin, Upload, Phone } from 'lucide-react';
+import { withDynamicImport } from '@/components/admin/with-dynamic-import';
 
 type Sponsor = {
     name: string;
@@ -32,7 +33,7 @@ type Sponsor = {
 
 const initialSponsors: Sponsor[] = [];
 
-export default function SponsorsEditorPage() {
+function SponsorsEditorPage() {
     const [sponsors, setSponsors] = useState<Sponsor[]>(initialSponsors);
     const [loading, setLoading] = useState(false);
     const [pageLoading, setPageLoading] = useState(true);
@@ -290,3 +291,5 @@ export default function SponsorsEditorPage() {
         </div>
     )
 }
+
+export default withDynamicImport(SponsorsEditorPage);

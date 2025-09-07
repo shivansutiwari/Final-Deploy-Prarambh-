@@ -12,6 +12,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { getDoc, setDoc, doc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { Loader2 } from 'lucide-react';
+import { withDynamicImport } from '@/components/admin/with-dynamic-import';
 
 const initialHeroContent = {
     presentingText: "",
@@ -23,7 +24,7 @@ const initialHeroContent = {
     eventYear: ""
 };
 
-export default function HomepageEditorPage() {
+function HomepageEditorPage() {
     const [heroContent, setHeroContent] = useState(initialHeroContent);
     const [loading, setLoading] = useState(false);
     const [pageLoading, setPageLoading] = useState(true);
@@ -141,3 +142,5 @@ export default function HomepageEditorPage() {
         </div>
     )
 }
+
+export default withDynamicImport(HomepageEditorPage);

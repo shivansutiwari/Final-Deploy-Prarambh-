@@ -11,10 +11,11 @@ import { Textarea } from '@/components/ui/textarea';
 import { getDoc, setDoc, doc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { Loader2 } from 'lucide-react';
+import { withDynamicImport } from '@/components/admin/with-dynamic-import';
 
 const initialSlogans: string[] = [];
 
-export default function SlogansEditorPage() {
+function SlogansEditorPage() {
     const [slogans, setSlogans] = useState(initialSlogans);
     const [loading, setLoading] = useState(false);
     const [pageLoading, setPageLoading] = useState(true);
@@ -110,3 +111,5 @@ export default function SlogansEditorPage() {
         </div>
     )
 }
+
+export default withDynamicImport(SlogansEditorPage);

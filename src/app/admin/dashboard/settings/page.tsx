@@ -11,6 +11,7 @@ import { useToast } from "@/hooks/use-toast";
 import { getDoc, setDoc, doc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { Loader2 } from 'lucide-react';
+import { withDynamicImport } from '@/components/admin/with-dynamic-import';
 import { format } from 'date-fns';
 
 const initialSettings = {
@@ -19,7 +20,7 @@ const initialSettings = {
     venue: ""
 };
 
-export default function SettingsPage() {
+function SettingsPage() {
     const [settings, setSettings] = useState(initialSettings);
     const [loading, setLoading] = useState(false);
     const [pageLoading, setPageLoading] = useState(true);
@@ -117,3 +118,5 @@ export default function SettingsPage() {
         </div>
     )
 }
+
+export default withDynamicImport(SettingsPage);

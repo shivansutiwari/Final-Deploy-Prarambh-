@@ -11,8 +11,9 @@ import { Textarea } from '@/components/ui/textarea';
 import { getDoc, setDoc, doc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { Loader2 } from 'lucide-react';
+import { withDynamicImport } from '@/components/admin/with-dynamic-import';
 
-export default function WarningSloganEditorPage() {
+function WarningSloganEditorPage() {
     const [slogan, setSlogan] = useState('');
     const [loading, setLoading] = useState(false);
     const [pageLoading, setPageLoading] = useState(true);
@@ -103,3 +104,5 @@ export default function WarningSloganEditorPage() {
         </div>
     )
 }
+
+export default withDynamicImport(WarningSloganEditorPage);

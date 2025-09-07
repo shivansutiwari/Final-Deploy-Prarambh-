@@ -12,6 +12,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { getDoc, setDoc, doc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { Loader2, Trash2, PlusCircle, Image as ImageIcon } from 'lucide-react';
+import { withDynamicImport } from '@/components/admin/with-dynamic-import';
 
 type Guest = {
     name: string;
@@ -22,7 +23,7 @@ type Guest = {
 
 const initialGuests: Guest[] = [];
 
-export default function GuestsEditorPage() {
+function GuestsEditorPage() {
     const [guests, setGuests] = useState<Guest[]>(initialGuests);
     const [loading, setLoading] = useState(false);
     const [pageLoading, setPageLoading] = useState(true);
@@ -157,3 +158,5 @@ export default function GuestsEditorPage() {
         </div>
     )
 }
+
+export default withDynamicImport(GuestsEditorPage);

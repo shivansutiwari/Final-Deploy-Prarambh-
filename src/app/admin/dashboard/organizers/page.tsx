@@ -11,11 +11,12 @@ import { useToast } from "@/hooks/use-toast";
 import { getDoc, setDoc, doc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { Loader2, Trash2, PlusCircle, Crown } from 'lucide-react';
+import { withDynamicImport } from '@/components/admin/with-dynamic-import';
 import { Checkbox } from '@/components/ui/checkbox';
 
 const initialNames: string[] = [''];
 
-export default function OrganizersEditorPage() {
+function OrganizersEditorPage() {
     const [names, setNames] = useState<string[]>(initialNames);
     const [adminIndices, setAdminIndices] = useState<number[]>([]);
     const [loading, setLoading] = useState(false);
@@ -177,3 +178,5 @@ export default function OrganizersEditorPage() {
         </div>
     )
 }
+
+export default withDynamicImport(OrganizersEditorPage);

@@ -12,6 +12,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { getDoc, setDoc, doc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { Loader2 } from 'lucide-react';
+import { withDynamicImport } from '@/components/admin/with-dynamic-import';
 import { Separator } from '@/components/ui/separator';
 
 type SectionContent = {
@@ -40,7 +41,7 @@ const initialData: SectionsData = {
     footer: { description: '', copyright: '' }
 };
 
-export default function SectionsEditorPage() {
+function SectionsEditorPage() {
     const [sections, setSections] = useState<SectionsData>(initialData);
     const [loading, setLoading] = useState(false);
     const [pageLoading, setPageLoading] = useState(true);
@@ -195,3 +196,5 @@ export default function SectionsEditorPage() {
         </div>
     )
 }
+
+export default withDynamicImport(SectionsEditorPage);

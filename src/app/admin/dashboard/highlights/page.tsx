@@ -12,6 +12,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { getDoc, setDoc, doc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { Loader2, Trash2, PlusCircle } from 'lucide-react';
+import { withDynamicImport } from '@/components/admin/with-dynamic-import';
 
 type Highlight = {
     icon: string;
@@ -27,7 +28,7 @@ const toPascalCase = (str: string) => {
   return str.replace(/(^\w|-\w)/g, (text) => text.replace(/-/, "").toUpperCase());
 };
 
-export default function HighlightsEditorPage() {
+function HighlightsEditorPage() {
     const [highlights, setHighlights] = useState<Highlight[]>(initialHighlights);
     const [loading, setLoading] = useState(false);
     const [pageLoading, setPageLoading] = useState(true);
@@ -163,3 +164,5 @@ export default function HighlightsEditorPage() {
         </div>
     )
 }
+
+export default withDynamicImport(HighlightsEditorPage);

@@ -12,11 +12,12 @@ import { getDoc, setDoc, doc } from 'firebase/firestore';
 import { updateEmail, updatePassword, EmailAuthProvider, reauthenticateWithCredential } from "firebase/auth";
 import { db, auth } from '@/lib/firebase';
 import { Loader2, KeyRound, ShieldCheck, Eye, EyeOff } from 'lucide-react';
+import { withDynamicImport } from '@/components/admin/with-dynamic-import';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { cn } from "@/lib/utils";
 import { Separator } from '@/components/ui/separator';
 
-export default function SecurityPage() {
+function SecurityPage() {
     const [securityPassword, setSecurityPassword] = useState('');
     const [isUnlocked, setIsUnlocked] = useState(false);
     const [passwordInput, setPasswordInput] = useState('');
@@ -336,3 +337,5 @@ export default function SecurityPage() {
         </div>
     )
 }
+
+export default withDynamicImport(SecurityPage);

@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { Instagram, Linkedin, Loader2, Mail, Link as LinkIcon, Youtube, Facebook, Twitter, Send, MapPin, Phone } from 'lucide-react';
+import { withDynamicImport } from '@/components/admin/with-dynamic-import';
 import { getDoc, setDoc, doc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 
@@ -25,7 +26,7 @@ const initialSocials = {
     mobile: "",
 };
 
-export default function SocialMediaPage() {
+function SocialMediaPage() {
     const [socials, setSocials] = useState(initialSocials);
     const [loading, setLoading] = useState(false);
     const [pageLoading, setPageLoading] = useState(true);
@@ -193,3 +194,5 @@ export default function SocialMediaPage() {
         </div>
     )
 }
+
+export default withDynamicImport(SocialMediaPage);

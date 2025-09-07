@@ -11,6 +11,7 @@ import { useToast } from "@/hooks/use-toast";
 import { getDoc, setDoc, doc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { Loader2, Link as LinkIcon, KeyRound, PlusCircle, Trash2, QrCode, Download, Folder, RefreshCw } from 'lucide-react';
+import { withDynamicImport } from '@/components/admin/with-dynamic-import';
 import QRCode from 'qrcode.react';
 
 type GalleryAlbum = {
@@ -30,7 +31,7 @@ const initialGalleryData: GalleryData = {
     albums: [{ name: '', link: '' }]
 };
 
-export default function GalleryEditorPage() {
+function GalleryEditorPage() {
     const [galleryData, setGalleryData] = useState<GalleryData>(initialGalleryData);
     const [loading, setLoading] = useState(false);
     const [pageLoading, setPageLoading] = useState(true);
@@ -292,4 +293,4 @@ export default function GalleryEditorPage() {
     )
 }
 
-    
+export default withDynamicImport(GalleryEditorPage);
