@@ -2,10 +2,45 @@
   publish = "out"
   command = "npm run build"
 
+# Handle static assets first
+[[redirects]]
+  from = "/favicon.svg"
+  to = "/favicon.svg"
+  status = 200
+
+# Handle other static assets
+[[redirects]]
+  from = "/_next/*"
+  to = "/_next/:splat"
+  status = 200
+
+# Handle admin login route specifically
+[[redirects]]
+  from = "/admin/login"
+  to = "/admin/login.html"
+  status = 200
+  force = true
+
+# Handle admin dashboard route specifically
+[[redirects]]
+  from = "/admin/dashboard"
+  to = "/admin/dashboard.html"
+  status = 200
+  force = true
+
+# Handle admin dashboard subroutes
+[[redirects]]
+  from = "/admin/dashboard/*"
+  to = "/admin/dashboard/:splat.html"
+  status = 200
+  force = true
+
+# Handle all other routes
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
+  force = true
 
 [build.environment]
   NODE_VERSION = "18"

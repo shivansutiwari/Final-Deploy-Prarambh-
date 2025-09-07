@@ -16,8 +16,20 @@ import Image from "next/image";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertTriangle, Eye, EyeOff } from "lucide-react";
 import { cn } from "@/lib/utils";
+import dynamic from "next/dynamic";
 
-export default function AdminLoginPage() {
+// Demo credentials for testing
+const DEMO_EMAIL = "admin@example.com";
+const DEMO_PASSWORD = "password123";
+
+// Use dynamic import with SSR disabled for better static export compatibility
+const AdminLoginPage = dynamic(() => Promise.resolve(LoginPageComponent), {
+  ssr: false
+});
+
+export default AdminLoginPage;
+
+function LoginPageComponent() {
   const router = useRouter();
   const { toast } = useToast();
   const [email, setEmail] = useState("");
@@ -56,6 +68,18 @@ export default function AdminLoginPage() {
     setLoading(true);
     setShowWarning(false);
     try {
+      // Check if using demo credentials
+      if (email === DEMO_EMAIL && password === DEMO_PASSWORD) {
+        toast({
+          title: "Demo Login Successful",
+          description: "Redirecting to the dashboard...",
+        });
+        // Redirect to dashboard directly without Firebase auth
+        router.push("/admin/dashboard");
+        return;
+      }
+      
+      // Try Firebase login if not using demo credentials
       await signInWithEmailAndPassword(auth, email, password);
       toast({
         title: "Login Successful",
@@ -89,6 +113,9 @@ export default function AdminLoginPage() {
                 )}
             </div>
           <CardDescription>Enter your credentials to access the dashboard.</CardDescription>
+          <CardDescription className="mt-2 text-green-600 font-medium">
+            Demo: {DEMO_EMAIL} / {DEMO_PASSWORD}
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <form className="space-y-6" onSubmit={handleLogin}>
@@ -101,44 +128,54 @@ export default function AdminLoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                disabled={loading}
               />
             </div>
-            <div className="space-y-2 relative">
-              <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
-                type={showPassword ? "text" : "password"}
-                placeholder="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                disabled={loading}
-                className="pr-10"
-              />
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon"
-                className="absolute right-1 top-7 h-7 w-7 text-muted-foreground hover:bg-transparent"
-                onClick={() => setShowPassword(!showPassword)}
-                disabled={loading}
-              >
-                {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
-                <span className="sr-only">{showPassword ? "Hide password" : "Show password"}</span>
-              </Button>
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <Label htmlFor="password">Password</Label>
+              </div>
+              <div className="relative">
+                <Input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="••••••••"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon"
+                  className="absolute right-2 top-1/2 -translate-y-1/2"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? (
+                    <EyeOff className="h-4 w-4" />
+                  ) : (
+                    <Eye className="h-4 w-4" />
+                  )}
+                  <span className="sr-only">
+                    {showPassword ? "Hide password" : "Show password"}
+                  </span>
+                </Button>
+              </div>
             </div>
-             {showWarning && warningSlogan && (
-                <Alert variant="destructive" className={cn("animate-shake")}>
-                    <AlertTriangle className="h-4 w-4" />
-                    <AlertTitle>Access Denied</AlertTitle>
-                    <AlertDescription className="font-bold">
-                        {warningSlogan}
-                    </AlertDescription>
-                </Alert>
+            {showWarning && (
+              <Alert variant="destructive">
+                <AlertTriangle className="h-4 w-4" />
+                <AlertTitle>Login Failed</AlertTitle>
+                <AlertDescription>
+                  {warningSlogan || "Invalid email or password."}
+                </AlertDescription>
+              </Alert>
             )}
-            <Button type="submit" className="w-full" disabled={loading}>
-              {loading ? "Logging in..." : "Log In"}
+            <Button
+              type="submit"
+              className="w-full"
+              disabled={loading}
+            >
+              {loading ? "Logging in..." : "Login"}
             </Button>
           </form>
         </CardContent>
