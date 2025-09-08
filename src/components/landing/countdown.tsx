@@ -25,12 +25,19 @@ const initialSettings: Settings = {
     venue: "College Auditorium"
 };
 
-export function Countdown({ settings: serverSettings }: { settings?: Settings }) {
-  const [settings] = useState(serverSettings || initialSettings);
-  const loading = !serverSettings;
+export function Countdown({ settings: serverSettings, loading: parentLoading = false }: { settings?: Settings, loading?: boolean }) {
+  const [settings, setSettings] = useState(initialSettings);
   const [timeLeft, setTimeLeft] = useState(initialTimeLeft);
   const [isClient, setIsClient] = useState(false);
+  const loading = parentLoading || !serverSettings;
 
+  // Update settings when serverSettings changes
+  useEffect(() => {
+    if (serverSettings) {
+      setSettings(serverSettings);
+    }
+  }, [serverSettings]);
+  
   const eventDate = new Date(`${settings.eventDate}T${settings.eventTime}:00`);
   
   const calculateTimeLeft = () => {

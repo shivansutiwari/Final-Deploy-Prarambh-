@@ -9,6 +9,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, Di
 import { Input } from "../ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
+import { Skeleton } from "../ui/skeleton";
 
 type GalleryAlbum = {
     name: string;
@@ -32,7 +33,21 @@ const defaultContent = {
     description: "A collection of moments from Prarambh BCA. Access the albums to relive the memories."
 };
 
-function GalleryComponent({ gallery: serverGallery, content }: { gallery?: GalleryData, content?: SectionContent }) {
+function GallerySkeleton() {
+  return (
+    <div className="container mx-auto px-4">
+      <div className="text-center mb-12">
+        <Skeleton className="h-12 w-3/4 mx-auto mb-4" />
+        <Skeleton className="h-6 w-2/3 mx-auto" />
+      </div>
+      <div className="flex justify-center">
+        <Skeleton className="h-16 w-64 rounded-full" />
+      </div>
+    </div>
+  );
+}
+
+function GalleryComponent({ gallery: serverGallery, content, loading }: { gallery?: GalleryData, content?: SectionContent, loading?: boolean }) {
   const { password, qrPassToken, albums: serverAlbums, driveLinks } = serverGallery || {};
   const { toast } = useToast();
   const searchParams = useSearchParams();
@@ -104,28 +119,32 @@ function GalleryComponent({ gallery: serverGallery, content }: { gallery?: Galle
 
   return (
     <section id="gallery">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <h2 className="font-headline text-4xl md:text-5xl font-bold">{title}</h2>
-          <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
-            {description}
-          </p>
-        </div>
+      {loading ? (
+        <GallerySkeleton />
+      ) : (
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="font-headline text-4xl md:text-5xl font-bold">{title}</h2>
+            <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
+              {description}
+            </p>
+          </div>
 
-        <div className="flex justify-center">
-            {hasContent ? (
-                 <Button onClick={handleGalleryClick} size="lg" className="text-lg py-6 px-10 rounded-full font-bold shadow-xl transition-transform hover:scale-105">
-                    <Camera className="mr-3 h-6 w-6"/>
-                    View Photo Albums
-                </Button>
-            ) : (
-                <Button size="lg" className="text-lg py-6 px-10 rounded-full font-bold bg-primary text-primary-foreground opacity-75 cursor-not-allowed" disabled>
-                    <Camera className="mr-3 h-6 w-6"/>
-                    Coming Soon
-                </Button>
-            )}
+          <div className="flex justify-center">
+              {hasContent ? (
+                  <Button onClick={handleGalleryClick} size="lg" className="text-lg py-6 px-10 rounded-full font-bold shadow-xl transition-transform hover:scale-105">
+                      <Camera className="mr-3 h-6 w-6"/>
+                      View Photo Albums
+                  </Button>
+              ) : (
+                  <Button size="lg" className="text-lg py-6 px-10 rounded-full font-bold bg-primary text-primary-foreground opacity-75 cursor-not-allowed" disabled>
+                      <Camera className="mr-3 h-6 w-6"/>
+                      Coming Soon
+                  </Button>
+              )}
+          </div>
         </div>
-      </div>
+      )}
 
        {/* Password Modal */}
        <Dialog open={isPasswordModalOpen} onOpenChange={handlePasswordModalOpenChange}>
@@ -199,9 +218,9 @@ function GalleryComponent({ gallery: serverGallery, content }: { gallery?: Galle
 }
 
 // Suspense Boundary is required for useSearchParams to work during server-side rendering
-export function Gallery(props: { gallery?: GalleryData, content?: SectionContent }) {
+export function Gallery(props: { gallery?: GalleryData, content?: SectionContent, loading?: boolean }) {
   return (
-    <Suspense fallback={<div>Loading gallery...</div>}>
+    <Suspense fallback={<GallerySkeleton />}>
       <GalleryComponent {...props} />
     </Suspense>
   )
