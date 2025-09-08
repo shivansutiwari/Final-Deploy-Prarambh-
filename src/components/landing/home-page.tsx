@@ -41,7 +41,7 @@ function PageLoadingSkeleton() {
 }
 
 export function HomePage({ content: initialContent }: { content: any }) {
-  const [content, setContent] = useState({});
+  const [content, setContent] = useState<Record<string, any>>({});
   const [loading, setLoading] = useState(true);
   const [dataFetched, setDataFetched] = useState(false);
 
@@ -55,7 +55,7 @@ export function HomePage({ content: initialContent }: { content: any }) {
           'organizers', 'contributors', 'sections'
         ];
         
-        const newContent = {};
+        const newContent: Record<string, any> = {};
         
         for (const type of contentTypes) {
           try {
